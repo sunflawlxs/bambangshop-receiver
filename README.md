@@ -85,5 +85,13 @@ This is the place for you to write reflections:
 ### Mandatory (Subscriber) Reflections
 
 #### Reflection Subscriber-1
-
+1. In this tutorial, we used RwLock<> to synchronise the use of Vec of Notifications. Explain why it is necessary for this case, and explain why we do not use Mutex<> instead?
+   RwLock<Vec> sangat diperlukan untuk mengkoordinasikan penggunaan dengan struktur data, yaitu sebuah Vector yang berisi notifikasi di sepanjang thread. RwLock memungkinkan beberapa reader untuk mengakses data secara bersamaaan, sementara hanya ada satu reader yang bisa mengubahnya.
+   Hal tersebut penting dalam multi-threading untuk menghindari persaingan data yang bisa terjadi secara acak dan memastikan bahwa informasi yang diakses selalu konsisten.
+   Pilihan RwLock didasarkan pada strategi locking yang berbeda. RwLock memperbolehkan beberapa reader untuk read lock secara bersamaan untuk skenario apabila operasi read lebih sering tejadi daripada operasi write.
+   Namun, Mutex hanya mengizinkan satu thread untuk memiliki akses eksklusif pada satu waktu yang bisa menghambat kinerja jika ada banyak operasi read yang terjadi secara bersamaan.
+2. In this tutorial, we used lazy_static external library to define Vec and DashMap as a “static” variable. Compared to Java where we can mutate the content of a static variable via a static function, why did not Rust allow us to do so?
+   Di Rust, melakukan perubahan pada nilai variabel statis tidak diizinkan karena bertentangan dengan prinsip-prinsip kepemilikan (ownership) dan peminjaman (borrowing). Hal ini terkait dengan konsep mutable aliasing, di mana Rust sangat memperhatikan keamanan memori dan mencegah kesalahan data dengan menerapkan aturan terkait referensi mutable dan status bersama yang dapat dimutasi.
+   Sebaliknya, dalam Java, Anda diizinkan untuk mengubah nilai variabel statis melalui fungsi statis karena Java memiliki pendekatan yang lebih longgar dalam hal keselamatan memori. Java menggunakan metode sinkronisasi eksplisit, seperti blok synchronized atau variabel volatile, untuk memastikan keamanan thread, berbeda dengan Rust yang lebih mengandalkan sistem peminjaman dan konkurensi primitif.
+   Rust menempatkan prioritas utama pada keselamatan memori dengan menggunakan peminjaman dan konkurensi primitif seperti RwLock dan Mutex untuk memberikan konkurensi yang aman dan efisien. Pendekatan ini membedakannya dari Java yang lebih sering menggunakan cara langsung untuk mengatur keamanan thread.
 #### Reflection Subscriber-2
